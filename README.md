@@ -108,7 +108,6 @@ git clone  https://github.com/erdayegauss/fraud-detection-application.git
 
 cd fraud-detection-application
 
-<<<<<<< HEAD
 ```
 
 
@@ -128,27 +127,6 @@ cd fraud-detection-application
 ```
 
 
-=======
-```
-
-
-### 2. AWS SQS Configuration
-
-- [Create an SQS queue](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/creating-sqs-standard-queues.html) (e.g., `fraud-detection-queue`). 
-
-- run  ```bash  testScript ``` to trigger one transaction message,  as the following
- ```
- {
-		"transactionId": "TX124",
-		"amount": 15000.0,
-		"senderAccount": "12345",
-		"receiverAccount": "67890",
-		"timestamp": 1736340587 
-} 
-```
-
-
->>>>>>> 98506f7939ac4d15f44b02dd7bb196c42f288ed5
   
 
 ### 3. CloudWatch Logging
@@ -179,8 +157,6 @@ java -jar build/libs/fraud-detection-application-0.0.1-SNAPSHOT.jar
  Trigger one transaction message and get the output  
 ```
 bash  testScript 
-<<<<<<< HEAD
-=======
 ```
 ![Local Test Result](img/localTest.png)
 
@@ -193,7 +169,6 @@ bash  testContainer
  Trigger one transaction message and get the output  
 ```
 bash  testScript 
->>>>>>> 98506f7939ac4d15f44b02dd7bb196c42f288ed5
 ```
 ![Local Test Result](img/localTest.png)
 
@@ -213,17 +188,6 @@ bash  testScript
 
 - Ensure you have a Kubernetes cluster running on AWS EKS, or local K8S.
 
-<<<<<<< HEAD
-- Apply Kubernetes manifests to deploy the service:
-
-```bash
-
-	kubectl apply -f Deployment.yaml
-
-```
-
-
-=======
 
 #### 5.3  Kubernetes Deployment
 
@@ -238,7 +202,6 @@ bash  testScript
 ```
 
 
->>>>>>> 98506f7939ac4d15f44b02dd7bb196c42f288ed5
 
 
 Check the service log for one of the running pod
@@ -309,15 +272,9 @@ gradle test
   
 
 ### 2. Coverage Testing
-<<<<<<< HEAD
 
 Jacoco Coverage testing result generated along with ```gradle test```
 
-=======
-
-Jacoco Coverage testing result generated along with ```gradle test```
-
->>>>>>> 98506f7939ac4d15f44b02dd7bb196c42f288ed5
 
   ![Local Test Result](img/coverageTest.png)
 
@@ -335,8 +292,4 @@ Feel free to fork this repository and submit pull requests. Please ensure any ch
 
 ## License
 
-<<<<<<< HEAD
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-=======
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
->>>>>>> 98506f7939ac4d15f44b02dd7bb196c42f288ed5
