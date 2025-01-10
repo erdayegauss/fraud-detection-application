@@ -3,7 +3,7 @@
 ## Objective
 The Real-Time Fraud Detection System is designed to detect fraudulent financial transactions in real-time. This service is implemented in Java using Spring Boot, deployed on a Kubernetes (K8s) cluster on a cloud platform (AWS EKS, GCP GKE, or Alibaba ACK), and leverages AWS services such as SQS for message queuing and CloudWatch for metrics.
 
-![Fraud Detection Diagram](diagram.png)
+![Fraud Detection Diagram](img/diagram.png)
 ## Features
 
 ### 1. **Core Functionality**
