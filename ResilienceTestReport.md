@@ -43,7 +43,7 @@ In this experiment, we test the resilience of a Kubernetes deployment with limit
 
 ## Screenshot of Pod States
 
-![Pod States Screenshot](Resilience.png)
+![Pod States Screenshot](img/Resilience.png)
 
 *Figure 1: Pod states before and after the termination of Pod 1.*
 
