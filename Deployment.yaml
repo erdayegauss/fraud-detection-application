@@ -17,6 +17,13 @@ spec:
         - name: fraud-detection
           image: fraud-detection-application:latest  # Replace with your image name
           imagePullPolicy: IfNotPresent
+          env: # replace with your WS keys and region
+            - name: XXXXX
+              value: "XXX"
+            - name: XXXX
+              value: "XXX"
+            - name: XXXX
+              value: "XXX"
           ports:
             - containerPort: 8080
           resources:
