@@ -1,0 +1,11 @@
+rm -rf  build/libs/*.jar
+
+gradle build
+
+docker build  -t  fraud-detection-application  .
+
+docker rm -f fraud-detection-application
+docker run -itd  --network host  -e AWS_REGION='ap-northeast-2' --name fraud-detection-application  -p  8080:8080  fraud-detection-application
+
+docker logs -f fraud-detection-application
+# docker exec -it fraud-detection-application bash

@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: fraud-detection-application
+
+
+aws:
+  region: ap-northeast-2
+  sqs:
+    queueUrl: https://sqs.ap-northeast-2.amazonaws.com/216717620097/fraud-detection-queue
+  scheduledTask:
+    fixedRate: 5000
+
+logging:
+  level:
+    root: INFO
+    com.example.fraud: DEBUG
+  file:
+    name: logs/fraud-detection.log
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  health:
+    aws:
+      enabled: true

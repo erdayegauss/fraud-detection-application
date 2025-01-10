@@ -1,0 +1,27 @@
+#!/bin/zsh
+
+# Replace with your AWS credentials and region
+
+# Replace with your SQS queue URL
+QUEUE_URL="https://sqs.ap-northeast-2.amazonaws.com/216717620097/fraud-detection-queue"
+
+# Define the message body as a JSON string
+message_body='{
+  "transactionId": "TX456",
+  "amount": 15000.0,
+  "senderAccount": "12345",
+  "receiverAccount": "67890",
+  "timestamp": 1736340588
+}'
+
+# Function to send an SQS message
+send_sqs_message() {
+  local message_body="$1"
+
+  aws sqs send-message \
+    --queue-url "$QUEUE_URL" \
+    --message-body "$message_body"
+}
+
+# Send the message
+send_sqs_message "$message_body"

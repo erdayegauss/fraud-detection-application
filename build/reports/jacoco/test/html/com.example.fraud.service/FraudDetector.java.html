@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FraudDetector.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">fraud-detection-application</a> &gt; <a href="index.source.html" class="el_package">com.example.fraud.service</a> &gt; <span class="el_source">FraudDetector.java</span></div><h1>FraudDetector.java</h1><pre class="source lang-java linenums">package com.example.fraud.service;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import software.amazon.awssdk.services.cloudwatch.CloudWatchClient;
+import software.amazon.awssdk.services.cloudwatch.model.*;
+
+import com.example.fraud.model.Transaction;
+
+import java.util.List;
+
+@Service
+public class FraudDetector {
+<span class="fc" id="L15">    private static final Logger logger = LoggerFactory.getLogger(FraudDetector.class);</span>
+    private final CloudWatchClient cloudWatchClient;
+    private static final double MAX_AMOUNT_THRESHOLD = 10000.0;
+<span class="fc" id="L18">    private static final List&lt;String&gt; SUSPICIOUS_ACCOUNTS = List.of(&quot;12345&quot;, &quot;67890&quot;);</span>
+
+<span class="fc" id="L20">    public FraudDetector(CloudWatchClient cloudWatchClient) {</span>
+<span class="fc" id="L21">        this.cloudWatchClient = cloudWatchClient;</span>
+<span class="fc" id="L22">    }</span>
+
+    public boolean isFraudulent(Transaction transaction) {
+<span class="fc" id="L25">        boolean isFraud = false;</span>
+
+<span class="fc bfc" id="L27" title="All 2 branches covered.">        if (transaction.getAmount() &gt; MAX_AMOUNT_THRESHOLD) {</span>
+<span class="fc" id="L28">            logFraud(transaction, &quot;Transaction exceeds maximum amount threshold.&quot;);</span>
+<span class="fc" id="L29">            isFraud = true;</span>
+        }
+
+<span class="fc bfc" id="L32" title="All 2 branches covered.">        if (SUSPICIOUS_ACCOUNTS.contains(transaction.getSenderAccount())) {</span>
+<span class="fc" id="L33">            logFraud(transaction, &quot;Transaction involves a suspicious account.&quot;);</span>
+<span class="fc" id="L34">            isFraud = true;</span>
+        }
+
+<span class="fc" id="L37">        return isFraud;</span>
+    }
+
+    private void logFraud(Transaction transaction, String reason) {
+<span class="fc" id="L41">        logger.warn(&quot;Fraud detected for Transaction ID {}: {}&quot;, transaction.getTransactionId(), reason);</span>
+<span class="fc" id="L42">        recordFraudMetric(transaction);</span>
+<span class="fc" id="L43">    }</span>
+
+    private void recordFraudMetric(Transaction transaction) {
+<span class="fc" id="L46">        MetricDatum datum = MetricDatum.builder()</span>
+<span class="fc" id="L47">            .metricName(&quot;FraudulentTransaction&quot;)</span>
+<span class="fc" id="L48">            .unit(StandardUnit.COUNT)</span>
+<span class="fc" id="L49">            .value(1.0)</span>
+<span class="fc" id="L50">            .dimensions(d -&gt; d.name(&quot;TransactionId&quot;).value(transaction.getTransactionId()))</span>
+<span class="fc" id="L51">            .build();</span>
+
+<span class="fc" id="L53">        PutMetricDataRequest request = PutMetricDataRequest.builder()</span>
+<span class="fc" id="L54">            .namespace(&quot;FraudDetectionMetrics&quot;)</span>
+<span class="fc" id="L55">            .metricData(datum)</span>
+<span class="fc" id="L56">            .build();</span>
+
+<span class="fc" id="L58">        cloudWatchClient.putMetricData(request);</span>
+<span class="fc" id="L59">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>

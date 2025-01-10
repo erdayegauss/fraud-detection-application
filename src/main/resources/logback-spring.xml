@@ -1,0 +1,34 @@
+<configuration>
+    <!-- Configure the CloudWatch Appender -->
+    <appender name="CloudWatch" class="com.lightstreamer.cloudwatch.logback.appender.AwsLogsJsonAppender">
+        <!-- AWS Region -->
+		<awsRegionName>ap-northeast-2</awsRegionName>
+
+        <!-- Log Stream name -->
+        <logStreamName>frauddetection</logStreamName>
+
+        <!-- Log Group name -->
+        <logGroupName>/ecs/frauddetection</logGroupName>
+
+    </appender>
+
+
+    <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} - %msg%n</pattern> <!-- Customize the log format -->
+        </encoder>
+    </appender>
+
+
+    <!-- Define the logging level and add CloudWatch appender -->
+    <root level="INFO">
+        <appender-ref ref="CloudWatch"/>
+    </root>
+
+    <!-- You can also add more specific loggers, for example: -->
+    <logger name="com.example.fraud" level="info">
+        <appender-ref ref="Console"/>
+    </logger>
+
+
+</configuration>

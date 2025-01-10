@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SqsService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">fraud-detection-application</a> &gt; <a href="index.source.html" class="el_package">com.example.fraud.integration</a> &gt; <span class="el_source">SqsService.java</span></div><h1>SqsService.java</h1><pre class="source lang-java linenums">package com.example.fraud.integration;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import software.amazon.awssdk.services.sqs.SqsClient;
+import software.amazon.awssdk.services.sqs.model.*;
+import com.example.fraud.model.Transaction;
+import com.example.fraud.util.JsonUtils;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class SqsService {
+<span class="fc" id="L15">    private static final Logger logger = LoggerFactory.getLogger(SqsService.class);</span>
+    private final SqsClient sqsClient;
+
+<span class="fc" id="L18">    public SqsService(SqsClient sqsClient) {</span>
+<span class="fc" id="L19">        this.sqsClient = sqsClient;</span>
+<span class="fc" id="L20">    }</span>
+
+    public List&lt;Message&gt; receiveMessages(String queueUrl, int maxMessages) {
+        try {
+<span class="fc" id="L24">            ReceiveMessageRequest receiveMessageRequest = ReceiveMessageRequest.builder()</span>
+<span class="fc" id="L25">                .queueUrl(queueUrl)</span>
+<span class="fc" id="L26">                .maxNumberOfMessages(maxMessages)</span>
+<span class="fc" id="L27">                .build();</span>
+
+<span class="fc" id="L29">            List&lt;Message&gt; messages = sqsClient.receiveMessage(receiveMessageRequest).messages();</span>
+            // logger.info(&quot;Received {} messages from SQS queue {}&quot;, messages.size(), queueUrl);
+<span class="fc" id="L31">            return messages;</span>
+<span class="nc" id="L32">        } catch (Exception e) {</span>
+<span class="nc" id="L33">            logger.error(&quot;Failed to receive messages from SQS queue {}&quot;, queueUrl, e);</span>
+<span class="nc" id="L34">            return List.of();</span>
+        }
+    }
+
+    public void deleteMessage(String queueUrl, String receiptHandle) {
+        try {
+<span class="fc" id="L40">            DeleteMessageRequest deleteMessageRequest = DeleteMessageRequest.builder()</span>
+<span class="fc" id="L41">                .queueUrl(queueUrl)</span>
+<span class="fc" id="L42">                .receiptHandle(receiptHandle)</span>
+<span class="fc" id="L43">                .build();</span>
+
+<span class="fc" id="L45">            sqsClient.deleteMessage(deleteMessageRequest);</span>
+            // logger.info(&quot;Deleted message from SQS queue {}&quot;, queueUrl);
+<span class="nc" id="L47">        } catch (Exception e) {</span>
+<span class="nc" id="L48">            logger.error(&quot;Failed to delete message from SQS queue {}&quot;, queueUrl, e);</span>
+<span class="fc" id="L49">        }</span>
+<span class="fc" id="L50">    }</span>
+
+    public Transaction deserializeTransaction(Message message) {
+<span class="nc" id="L53">        return JsonUtils.deserialize(message.body(), Transaction.class);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
