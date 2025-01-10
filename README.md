@@ -10,7 +10,7 @@ The Real-Time Fraud Detection System is designed to detect fraudulent financial 
 ## Architecture Diagram
 
 
-![Fraud Detection Diagram](diagram.png)
+![Fraud Detection Diagram](img/diagram.png)
 
 
 ## Features
@@ -115,7 +115,7 @@ cd fraud-detection-application
 
 - [Create an SQS queue](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/creating-sqs-standard-queues.html) (e.g., `fraud-detection-queue`). 
 
-- run  ```bash  testScript ``` to trigger one transaction message,  as the following
+- ```bash  testScript ``` to trigger one transaction message,  as the following
  ```
  {
 		"transactionId": "TX124",
@@ -170,24 +170,6 @@ bash  testContainer
 ```
 bash  testScript 
 ```
-![Local Test Result](img/localTest.png)
-
-#### 5.2 Container Deployment
-Start the service in docker container
-```
-bash  testContainer 
-```
-  
- Trigger one transaction message and get the output  
-```
-bash  testScript 
-```
-
-
-#### 5.3  Kubernetes Deployment
-
-- Ensure you have a Kubernetes cluster running on AWS EKS, or local K8S.
-
 
 #### 5.3  Kubernetes Deployment
 
