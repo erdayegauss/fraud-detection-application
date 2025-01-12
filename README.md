@@ -117,7 +117,7 @@ cd fraud-detection-application
 
 - Run the following command to trigger a sample transaction message:
 
-```bash  testScript ``` 
+```bash  testSQSsimulator ``` 
 
 Example transaction:
 
@@ -162,7 +162,9 @@ java -jar build/libs/fraud-detection-application-0.0.1-SNAPSHOT.jar
 ```
 Trigger a transaction message and view the output:  
 ```bash
-bash  testScript 
+
+bash  testSQSsimulator 
+
 ```
 ![Local Test Result](img/localTest.png)
 
@@ -174,7 +176,7 @@ bash  testContainer
   
 Trigger a transaction message and view the output:  
 ```bash
-bash  testScript 
+bash  testSQSsimulator 
 ```
 
 #### 5.3  Kubernetes Deployment
@@ -197,7 +199,7 @@ kubectl logs -f  POD_NAME
 
 Trigger a transaction message and view the output:  
 ```bash
-bash  testScript 
+bash  testSQSsimulator 
 ```
 ![Local Test Result](img/localK8S.png)
 
