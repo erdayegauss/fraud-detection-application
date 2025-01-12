@@ -189,6 +189,8 @@ bash  testSQSsimulator
 
 - Ensure you have a Kubernetes cluster running on AWS EKS, or locally via K8S.
 
+- Update the Deployment.yaml file with your container image, specifying the appropriate registry (local, Docker Hub, or AWS ECR).
+
 - Deploy the service to Kubernetes using the following command:
 
 ```bash
