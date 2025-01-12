@@ -1,3 +1,16 @@
+# Kubernetes Secret for AWS Credentials
+apiVersion: v1
+kind: Secret
+metadata:
+  name: aws-credentials
+type: Opaque
+data:       # setup AWS credentials and region
+  XXX: XXX  # Base64 encoded value for "AWS ACCESS KEY ID"
+  XXX: XXX  # Base64 encoded value for "AWS SECRET ACCESS KEY"
+  XXX: XXX  # Base64 encoded value for "AWS REGION"
+
+---
+# Kubernetes Deployment for Fraud Detection Application
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -17,13 +30,9 @@ spec:
         - name: fraud-detection
           image: fraud-detection-application:latest  # Replace with your image name
           imagePullPolicy: IfNotPresent
-          env: # replace with your WS keys and region
-            - name: XXXXX
-              value: "XXX"
-            - name: XXXX
-              value: "XXX"
-            - name: XXXX
-              value: "XXX"
+          envFrom:
+            - secretRef:
+                name: aws-credentials  # Reference the created secret here
           ports:
             - containerPort: 8080
           resources:
@@ -33,7 +42,9 @@ spec:
             limits:
               cpu: "1000m"
               memory: "512Mi"
+
 ---
+# Kubernetes Service for Fraud Detection Application
 apiVersion: v1
 kind: Service
 metadata:
@@ -46,7 +57,9 @@ spec:
       port: 8080
       targetPort: 8080
   type: ClusterIP  # Default Service Type for internal communication
+
 ---
+# Horizontal Pod Autoscaler for Fraud Detection Application
 apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
 metadata:
@@ -65,7 +78,9 @@ spec:
         target:
           type: Utilization
           averageUtilization: 50
+
 ---
+# Network Policy to allow all outbound traffic
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
