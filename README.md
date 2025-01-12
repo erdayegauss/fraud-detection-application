@@ -117,7 +117,11 @@ cd fraud-detection-application
 
 - Run the following command to trigger a sample transaction message:
 
-```bash  testSQSsimulator ``` 
+```bash
+
+bash  testSQSsimulator 
+
+``` 
 
 Example transaction:
 
