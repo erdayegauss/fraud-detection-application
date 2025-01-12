@@ -5,7 +5,7 @@
 
 ## Objective
 
-The Real-Time Fraud Detection System is designed to detect fraudulent financial transactions in real-time. This service is implemented in Java using Spring Boot, deployed on a Kubernetes (K8s) cluster on a cloud platform (AWS EKS, GCP GKE, or Alibaba ACK), and leverages AWS services such as SQS for message queuing and CloudWatch for metrics.
+The Real-Time Fraud Detection System is designed to detect fraudulent financial transactions in real-time. This service is implemented in Java using Spring Boot, deployed on a Kubernetes (K8s) cluster on cloud platform AWS EKS, and integrated with AWS services such as SQS for message queuing and CloudWatch for monitoring and logging.
 
 ## Architecture Diagram
 
@@ -115,8 +115,13 @@ cd fraud-detection-application
 
 - [Create an SQS queue](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/creating-sqs-standard-queues.html) (e.g., `fraud-detection-queue`). 
 
-- ```bash  testScript ``` to trigger one transaction message,  as the following
- ```
+- Run the following command to trigger a sample transaction message:
+
+```bash  testScript ``` 
+
+Example transaction:
+
+```bash
  {
 		"transactionId": "TX124",
 		"amount": 15000.0,
@@ -131,10 +136,9 @@ cd fraud-detection-application
 
 ### 3. CloudWatch Logging
 
-- [Set up AWS CloudWatch to collect logs and metrics.](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/GettingSetup.html)
+- [Set up AWS CloudWatch](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/GettingSetup.html) to collect logs and metrics.
 
-- The system will log fraudulent transactions and record metrics related to fraud detection.
-
+- The system will automatically log fraudulent transactions and record relevant metrics in CloudWatch.
   
 
 ### 4. Build the Project
@@ -147,6 +151,8 @@ gradle build
 
 
 ### 5. Deployment
+
+Please update the ```testSQSsimulator```, ```testContainer```, and ```Deployment.yaml``` files with your AWS IAM credentials and region. This will enable access to AWS SQS and CloudWatch services. Once updated, proceed with the following steps.
 #### 5.1 Local Deployment
 Start the local service
 ```bash
@@ -154,48 +160,44 @@ Start the local service
 java -jar build/libs/fraud-detection-application-0.0.1-SNAPSHOT.jar
 
 ```
- Trigger one transaction message and get the output  
-```
+Trigger a transaction message and view the output:  
+```bash
 bash  testScript 
 ```
 ![Local Test Result](img/localTest.png)
 
 #### 5.2 Container Deployment
-Start the service in docker container
-```
+Run the service within a docker container
+```bash
 bash  testContainer 
 ```
   
- Trigger one transaction message and get the output  
-```
+Trigger a transaction message and view the output:  
+```bash
 bash  testScript 
 ```
 
 #### 5.3  Kubernetes Deployment
 
-- Ensure you have a Kubernetes cluster running on AWS EKS, or local K8S.
+- Ensure you have a Kubernetes cluster running on AWS EKS, or locally via K8S.
 
-- Apply Kubernetes manifests to deploy the service:
+- Deploy the service to Kubernetes using the following command:
 
 ```bash
-
-	kubectl apply -f Deployment.yaml
-
+kubectl apply -f Deployment.yaml
 ```
 
 
 
 
-Check the service log for one of the running pod
+Check the logs of one of the running pods:
 ```bash
-
-	kubectl logs -f 
-
+kubectl logs -f  POD_NAME
 ```
 
- Trigger one transaction message and get the output  
-```
-	bash  testScript 
+Trigger a transaction message and view the output:  
+```bash
+bash  testScript 
 ```
 ![Local Test Result](img/localK8S.png)
 
@@ -255,14 +257,14 @@ gradle test
 
 ### 2. Coverage Testing
 
-Jacoco Coverage testing result generated along with ```gradle test```
+Jacoco coverage reports are generated during the test run. 
 
 
   ![Local Test Result](img/coverageTest.png)
 
 ### 3. Resilience Testing
 
-Test the system's ability to recover from various failures, such as pod restarts and node failures, details in ResilienceTestReport.md
+The system's resilience to various failures (e.g., pod restarts, node failures) is tested and documented in ResilienceTestReport.md.
 
   
 
