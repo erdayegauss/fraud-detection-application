@@ -111,11 +111,14 @@ cd fraud-detection-application
 ```
 
 
-### 2. AWS SQS Configuration
+### 2. AWS Services Configuration
+Please update the ```testSQSsimulator```, ```testContainer```, and ```Deployment.yaml``` files with your AWS IAM credentials and region. This will enable access to AWS SQS and CloudWatch services. Once updated, proceed with the following steps.
+
+#### 2.1 SQS Configuration
 
 - [Create an SQS queue](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/creating-sqs-standard-queues.html) (e.g., `fraud-detection-queue`). 
 
-- Run the following command to trigger a sample transaction message:
+- Run the following command to trigger a sample SQS message for transaction data:
 
 ```bash
 
@@ -138,26 +141,25 @@ Example transaction:
 
   
 
-### 3. CloudWatch Logging
+#### 2.2 CloudWatch Logging
 
 - [Set up AWS CloudWatch](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/GettingSetup.html) to collect logs and metrics.
 
 - The system will automatically log fraudulent transactions and record relevant metrics in CloudWatch.
   
 
-### 4. Build the Project
+### 3. Build the Project
 
 ```bash
 
 gradle build
 
 ```
+The build outputs will be in ```build``` folder. 
 
+### 4. Deployment
 
-### 5. Deployment
-
-Please update the ```testSQSsimulator```, ```testContainer```, and ```Deployment.yaml``` files with your AWS IAM credentials and region. This will enable access to AWS SQS and CloudWatch services. Once updated, proceed with the following steps.
-#### 5.1 Local Deployment
+#### 4.1 Local Deployment
 Start the local service
 ```bash
 
@@ -172,7 +174,7 @@ bash  testSQSsimulator
 ```
 ![Local Test Result](img/localTest.png)
 
-#### 5.2 Container Deployment
+#### 4.2 Container Deployment
 Run the service within a docker container
 ```bash
 bash  testContainer 
@@ -183,7 +185,7 @@ Trigger a transaction message and view the output:
 bash  testSQSsimulator 
 ```
 
-#### 5.3  Kubernetes Deployment
+#### 4.3  Kubernetes Deployment
 
 - Ensure you have a Kubernetes cluster running on AWS EKS, or locally via K8S.
 
